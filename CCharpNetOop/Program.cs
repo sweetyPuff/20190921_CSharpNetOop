@@ -7,21 +7,39 @@ namespace CCharpNetOop
 	{
 		private static void Main(string[] args)
 		{
-			var employee = new EmployeeClass();
+			var employeeClass = new EmployeeClass();
+			Console.WriteLine("Class");
+			Console.WriteLine($"Name={employeeClass.Name}. Salary={employeeClass.Salary}");
+			RenameAndHalfSalary(employeeClass);
+			Console.WriteLine($"After RenameAndHalfSalary(), pass by ref");
+			Console.WriteLine($"Name={employeeClass.Name}. Salary={employeeClass.Salary}");
+			Console.WriteLine();
 
-			employee.Name ="Kyo1";
-			employee.Salary = 101;
+			var employeeStruct = new EmployeeStruct(int.MaxValue);
+			Console.WriteLine("Struct");
+			Console.WriteLine($"Name={employeeStruct.Name}. Salary={employeeStruct.Salary}");
+			RenameAndHalfSalary(employeeStruct);
+			Console.WriteLine($"After RenameAndHalfSalary(), pass by value");
+			Console.WriteLine($"Name={employeeStruct.Name}. Salary={employeeStruct.Salary}");
 
-			Console.WriteLine($"Name={employee.Name}.Salary={employee.Salary}");
+			EmployeeStruct employeeStructWithoutConstruct;
+			employeeStructWithoutConstruct.Salary = 103;
 
-			var employeeStruct = new EmployeeStruct();
-
-			employeeStruct.Name = "Kyo2";
-			employeeStruct.Salary = 102;
-
-			Console.WriteLine($"Name={employeeStruct.Name}.Salary={employeeStruct.Salary}");
+			Console.WriteLine($"no need to construct, Salary={employeeStructWithoutConstruct.Salary}");
 
 			Console.ReadLine();
+		}
+
+		private static void RenameAndHalfSalary(EmployeeClass ec)
+		{
+			ec.Name = "Kyo";
+			ec.Salary /= 2;
+		}
+
+		private static void RenameAndHalfSalary(EmployeeStruct es)
+		{
+			es.Name = "Kyo";
+			es.Salary /= 2;
 		}
 	}
 }
