@@ -8,45 +8,51 @@ namespace CCharpNetOop
 		private static void Main(string[] args)
 		{
 			var ea = new EaClass();
-			ea.Attach(new Employee("Kyo", ea));
-			ea.Attach(new Employee("Amanda", ea));
-			ea.Situation = "DM is back, ready to work!!";
-			ea.Notify();
+			ea.Attach(new Employee("Kyo"));
+			ea.Attach(new Employee("Amanda"));
+			ea.SetStatus("DM is back, ready to work!!");
 		}
 	}
 
-	internal class Employee
+	internal class Employee : IObserver
 	{
-		private EaClass _ea;
-		private string _name;
+		private readonly string _name;
 
-		public Employee(string name, EaClass ea)
+		public Employee(string name)
 		{
 			_name = name;
-			_ea = ea;
 		}
 
-		public void Update()
+		public void Update(string situation)
 		{
-			Console.WriteLine($"{_name}!! {_ea.Situation}!!");
+			Console.WriteLine($"{_name}!! {situation}!!");
 		}
 	}
 
-	internal class EaClass
+	internal class EaClass : ISubject
 	{
-		private List<Employee> _employees = new List<Employee>();
-		public string Situation { get; set; }
+		private readonly List<IObserver> _observers = new List<IObserver>();
+		private string _situation;
 
-		public void Attach(Employee employee)
+		public void Attach(IObserver employee)
 		{
-			_employees.Add(employee);
+			_observers.Add(employee);
 		}
 
-		public void Notify()
+		public void Notify(string situation)
 		{
-			foreach (var employee in _employees)
+			foreach (var employee in _observers)
 			{
-				employee.Update();
+				employee.Update(situation);
+			}
+		}
+
+		public void SetStatus(string situation)
+		{
+			if (_situation != situation)
+			{
+				_situation = situation;
+				Notify(situation);
 			}
 		}
 	}
