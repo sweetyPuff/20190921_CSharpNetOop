@@ -8,8 +8,12 @@ namespace CCharpNetOop
 		private static void Main(string[] args)
 		{
 			var ea = new EaClass();
-			ea.Attach(new Employee("Kyo"));
-			ea.Attach(new Employee("Amanda"));
+			var kyo = new Employee("Kyo");
+			ea.Attach(kyo);
+			ea.OnUpdate += kyo.Update;
+			var amanda = new Employee("Amanda");
+			ea.Attach(amanda);
+			ea.OnUpdate += amanda.Update;
 			ea.SetStatus("DM is back, ready to work!!");
 		}
 	}
@@ -33,6 +37,8 @@ namespace CCharpNetOop
 	{
 		private readonly List<IObserver> _observers = new List<IObserver>();
 		private string _situation;
+		public delegate void Update(string str);
+		public Update OnUpdate;
 
 		public void Attach(IObserver employee)
 		{
@@ -41,10 +47,7 @@ namespace CCharpNetOop
 
 		public void Notify(string situation)
 		{
-			foreach (var employee in _observers)
-			{
-				employee.Update(situation);
-			}
+			OnUpdate.Invoke(situation);
 		}
 
 		public void SetStatus(string situation)
