@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CCharpNetOop
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			var ea = new EaClass();
-			ea.Attach(new Employee(){Name="Kyo", Ea=ea});
-			ea.Attach(new Employee(){Name="Amanda", Ea = ea});
+			ea.Attach(new Employee("Kyo", ea));
+			ea.Attach(new Employee("Amanda", ea));
 			ea.Situation = "DM is back, ready to work!!";
 			ea.Notify();
 		}
@@ -20,12 +17,18 @@ namespace CCharpNetOop
 
 	internal class Employee
 	{
-		public string Name { get; set; }
-		public EaClass Ea { get; set; }
+		private EaClass _ea;
+		private string _name;
+
+		public Employee(string name, EaClass ea)
+		{
+			_name = name;
+			_ea = ea;
+		}
 
 		public void Update()
 		{
-			Console.WriteLine($"{Name}!! {Ea.Situation}!!");
+			Console.WriteLine($"{_name}!! {_ea.Situation}!!");
 		}
 	}
 
