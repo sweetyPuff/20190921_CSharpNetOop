@@ -2,6 +2,6 @@
 {
 	internal interface IObserver
 	{
-		void Update(string situation);
+		void Update(object sender, string e);
 	}
 }

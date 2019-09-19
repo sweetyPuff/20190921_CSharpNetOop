@@ -27,9 +27,9 @@ namespace CCharpNetOop
 			_name = name;
 		}
 
-		public void Update(string situation)
+		public void Update(object sender, string e)
 		{
-			Console.WriteLine($"{_name}!! {situation}!!");
+			Console.WriteLine($"{_name}!! {e}!!");
 		}
 	}
 
@@ -37,8 +37,7 @@ namespace CCharpNetOop
 	{
 		private readonly List<IObserver> _observers = new List<IObserver>();
 		private string _situation;
-		public delegate void Update(string str);
-		public Update OnUpdate;
+		public event EventHandler<string> OnUpdate;
 
 		public void Attach(IObserver employee)
 		{
@@ -47,7 +46,7 @@ namespace CCharpNetOop
 
 		public void Notify(string situation)
 		{
-			OnUpdate.Invoke(situation);
+			OnUpdate.Invoke(_observers, situation);
 		}
 
 		public void SetStatus(string situation)
