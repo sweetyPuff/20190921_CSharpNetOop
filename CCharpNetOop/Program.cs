@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CCharpNetOop
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
+			var authenticationService = new AuthenticationService();
+			var isValid = authenticationService.Verify("Kyo", "1qaz2wsx", "0880449");
+			Console.WriteLine("Verify result:" + isValid);
 		}
 	}
 }
