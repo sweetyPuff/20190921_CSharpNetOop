@@ -10,6 +10,9 @@ namespace CCharpNetOop
 	{
 		static void Main(string[] args)
 		{
+			var scald = new Scald();
+			scald.HandleBurn();
+			Console.ReadLine();
 		}
 	}
 }
