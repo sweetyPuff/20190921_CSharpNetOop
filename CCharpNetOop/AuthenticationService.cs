@@ -13,6 +13,10 @@ namespace CCharpNetOop
 	{
 		public bool Verify(string accountId, string password, string otp)
 		{
+			// step1. use accountId query password from db by dapper
+			// step2. use httpClient get current Otp from api
+			// step3. hash password
+			// step4. compare hashed password with password with db && otp with current Otp from api
 			return false;
 		}
 	}
