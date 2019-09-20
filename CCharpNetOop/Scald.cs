@@ -2,7 +2,7 @@
 
 namespace CCharpNetOop
 {
-	internal class Scald
+	public class Scald
 	{
 		public void HandleBurn()
 		{
@@ -13,28 +13,28 @@ namespace CCharpNetOop
 			Send();
 		}
 
-		private void Rinse()
+		protected virtual void Rinse()
 		{
 
 			Console.WriteLine("水龍頭沖水");
 		}
 
-		private void Off()
+		protected virtual void Off()
 		{
 			Console.WriteLine("脫去衣物");
 		}
 
-		private void Dip()
+		protected virtual void Dip()
 		{
 			Console.WriteLine("泡在水中");
 		}
 
-		private void Cover()
+		protected virtual void Cover()
 		{
 			Console.WriteLine("蓋上乾淨毛巾");
 		}
 
-		private void Send()
+		protected virtual void Send()
 		{
 			Console.WriteLine("快點送醫");
 		}
