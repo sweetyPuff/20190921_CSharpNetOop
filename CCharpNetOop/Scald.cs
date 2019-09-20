@@ -16,27 +16,27 @@ namespace CCharpNetOop
 		private void Rinse()
 		{
 
-			Console.WriteLine("Rinse");
+			Console.WriteLine("水龍頭沖水");
 		}
 
 		private void Off()
 		{
-			Console.WriteLine("Off");
+			Console.WriteLine("脫去衣物");
 		}
 
 		private void Dip()
 		{
-			Console.WriteLine("Dip");
+			Console.WriteLine("泡在水中");
 		}
 
 		private void Cover()
 		{
-			Console.WriteLine("Cover");
+			Console.WriteLine("蓋上乾淨毛巾");
 		}
 
 		private void Send()
 		{
-			Console.WriteLine("Send");
+			Console.WriteLine("快點送醫");
 		}
 	}
 }
