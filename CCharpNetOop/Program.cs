@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CCharpNetOop
 {
@@ -13,71 +10,58 @@ namespace CCharpNetOop
 			var ea = new EaClass();
             var kyo = new Employee("Kyo");
 		    var amanda = new Employee("Amanda");
-		    ea.onDmBack += kyo.Work;
-		    ea.onDmGoHome += kyo.Play;
-		    ea.onDmSleep += kyo.GoHome;
-		    ea.onDmBack += amanda.Work;
-		    ea.onDmGoHome += amanda.Play;
-		    ea.onDmSleep += amanda.GoHome;
+            ea.Attach(kyo);
+		    ea.Attach(amanda);
             ea.SetState(DmStatus.Back);
             ea.SetState(DmStatus.GoHome);
+		    ea.DeAttach(amanda);
             ea.SetState(DmStatus.Sleep);
             Console.Read();
 		}
 	}
 
-	internal class Employee
-	{
+	internal class Employee : IObserver
+    {
 	    public string _name;
 	    public Employee(string name)
 	    {
 	        _name = name;
 	    }
 
-	    public void Work(object o, string e)
-	    {
-	        Console.WriteLine($"{_name} is work!!");
-	    }
-
-	    public void Play(object o, string e)
-	    {
-	        Console.WriteLine($"{_name} is play!!");
-	    }
-
-	    public void GoHome(object o, string e)
-	    {
-	        Console.WriteLine($"{_name} is go home!!");
-	    }
+        public void Update()
+        {
+            Console.WriteLine($"{_name} was notified");
+        }
 	}
 
-	internal class EaClass
+	internal class EaClass : ISubject
 	{
+	    private List<IObserver> _employees = new List<IObserver>();
 	    private DmStatus _preSituation;
-	    public event EventHandler<string> onDmBack;
-	    public event EventHandler<string> onDmGoHome;
-	    public event EventHandler<string> onDmSleep;
 
-        private void Notify(DmStatus dmStatus)
+	    public void Attach(IObserver employee)
+	    {
+	        _employees.Add(employee);
+        }
+
+	    public void DeAttach(IObserver employee)
+	    {
+	        _employees.Remove(employee);
+	    }
+
+        public void Notify()
 		{
-		    switch (dmStatus)
+		    foreach (var em in _employees)
 		    {
-		        case DmStatus.Back:
-		            onDmBack?.Invoke(null, "back");
-		            break;
-		        case DmStatus.GoHome:
-		            onDmGoHome?.Invoke(null, "go home");
-		            break;
-		        case DmStatus.Sleep:
-		            onDmSleep?.Invoke(null, "sleep");
-		            break;
-		    };
+		        em.Update();
+		    }
         }
 
         public void SetState(DmStatus dmStatus)
         {
             if (_preSituation != dmStatus)
             {
-                Notify(dmStatus);
+                Notify();
             }
             _preSituation = dmStatus;
         }
@@ -89,5 +73,17 @@ namespace CCharpNetOop
         Back,
         GoHome,
         Sleep
+    }
+
+    public interface ISubject
+    {
+        void Notify();
+        void Attach(IObserver employee);
+        void DeAttach(IObserver employee);
+    }
+
+    public interface IObserver
+    {
+        void Update();
     }
 }
