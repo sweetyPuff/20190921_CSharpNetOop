@@ -11,6 +11,7 @@ namespace CCharpNetOop
 			var accessLevel = new AccessLevels();
 			Console.WriteLine(accessLevel.PublicProperty);
 			Console.WriteLine(accessLevel.InternalProperty);
+            // 只拿得到同一個project下面的東西, 除非給它權限
 
 			var derivedAccessLevels = new DerivedAccessLevels();
 			Console.WriteLine(derivedAccessLevels.GetProtectedProperty);
