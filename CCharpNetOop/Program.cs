@@ -11,40 +11,83 @@ namespace CCharpNetOop
 		static void Main(string[] args)
 		{
 			var ea = new EaClass();
-			ea.Attach(new Employee(){Name="Kyo", Ea=ea});
-			ea.Attach(new Employee(){Name="Amanda", Ea = ea});
-			ea.Situation = "DM is back, ready to work!!";
-			ea.Notify();
+            var kyo = new Employee("Kyo");
+		    var amanda = new Employee("Amanda");
+		    ea.onDmBack += kyo.Work;
+		    ea.onDmGoHome += kyo.Play;
+		    ea.onDmSleep += kyo.GoHome;
+		    ea.onDmBack += amanda.Work;
+		    ea.onDmGoHome += amanda.Play;
+		    ea.onDmSleep += amanda.GoHome;
+            ea.SetState(DmStatus.Back);
+            ea.SetState(DmStatus.GoHome);
+            ea.SetState(DmStatus.Sleep);
+            Console.Read();
 		}
 	}
 
 	internal class Employee
 	{
-		public string Name { get; set; }
-		public EaClass Ea { get; set; }
+	    public string _name;
+	    public Employee(string name)
+	    {
+	        _name = name;
+	    }
 
-		public void Update()
-		{
-			Console.WriteLine($"{Name}!! {Ea.Situation}!!");
-		}
+	    public void Work(object o, string e)
+	    {
+	        Console.WriteLine($"{_name} is work!!");
+	    }
+
+	    public void Play(object o, string e)
+	    {
+	        Console.WriteLine($"{_name} is play!!");
+	    }
+
+	    public void GoHome(object o, string e)
+	    {
+	        Console.WriteLine($"{_name} is go home!!");
+	    }
 	}
 
 	internal class EaClass
 	{
-		private List<Employee> _employees = new List<Employee>();
-		public string Situation { get; set; }
+	    private DmStatus _preSituation;
+	    public event EventHandler<string> onDmBack;
+	    public event EventHandler<string> onDmGoHome;
+	    public event EventHandler<string> onDmSleep;
 
-		public void Attach(Employee employee)
+        private void Notify(DmStatus dmStatus)
 		{
-			_employees.Add(employee);
-		}
+		    switch (dmStatus)
+		    {
+		        case DmStatus.Back:
+		            onDmBack?.Invoke(null, "back");
+		            break;
+		        case DmStatus.GoHome:
+		            onDmGoHome?.Invoke(null, "go home");
+		            break;
+		        case DmStatus.Sleep:
+		            onDmSleep?.Invoke(null, "sleep");
+		            break;
+		    };
+        }
 
-		public void Notify()
-		{
-			foreach (var employee in _employees)
-			{
-				employee.Update();
-			}
-		}
+        public void SetState(DmStatus dmStatus)
+        {
+            if (_preSituation != dmStatus)
+            {
+                Notify(dmStatus);
+            }
+            _preSituation = dmStatus;
+        }
 	}
+
+    internal enum DmStatus
+    {
+        UnKnown,
+        Back,
+        GoHome,
+        Sleep
+    }
 }
